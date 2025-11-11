@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block group %}
+  <li>
+    <a href="{% url 'group:group_create' %}" class="nav-link px-2 link-body-emphasis">Create Group</a>
+  </li>
+{% endblock %}
+{% block post %}
+  <li>
+    <a href="{% url 'post:post_list' %}" class="nav-link px-2 link-body-emphasis">Posts</a>
+  </li>
+{% endblock %}
+
+{% block content %}
+
+<div class="container text-center pt-5">
+  <h1>Group List</h1>
+  <br /><br />
+  {% for group in groups %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <a href="{% url 'group:group_detail' pk=group.id %}" class="text-decoration-none text-dark">
+          <h5 class="card-title">{{ group.name }}</h5>
+          <p class="card-text">{{ group.description }}</p>
+        </a>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,25 @@
+# Social-Network (MVP)
+- the social network is for connecting peoples together. and it separates the roles between users.
+- Two types of users:
+    - Admin (to make it easy let's not give special task)
+        - Can **delete abusive posts/comments**
+
+    - Users
+        - **authenticated** and **not auth(Guest)** users.
+        - Auth Users:
+            - Can **create groups**
+            - an **join/leave groups**
+            - Can **edit/delete their own groups**
+            - Can **create posts** inside groups
+            - Can **like/unlike posts**
+            - Can **edit/delete their own posts**
+            - can **comment** on posts.
+            - can **delete own comment** from posts.
+
+            # not for MVP
+            - Can **view their own profile**
+
+        - **Not Auth Users:**
+            - Can **see groups**
+            - Can **see posts and comments** in groups
+            - Cannot interact (**like/comment/join/post**)

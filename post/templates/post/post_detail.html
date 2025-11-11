@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load post_tags %}
+
+{% block group %}
+  <li>
+    <a href="{% url 'group:group_create' %}" class="nav-link px-2 link-body-emphasis">Create Group</a>
+  </li>
+{% endblock %}
+
+{% block post %}
+  <li>
+    <a href="{% url 'post:post_create' %}" class="nav-link px-2 link-body-emphasis">Create Post</a>
+  </li>
+{% endblock %}
+
+{% block content %}
+<div class="container text-center pt-5">
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="mb-1">{{object.user}}</h5>
+          <small class="text-muted">{{object.created_at|date:"M. d, Y"}}</small>
+        </div>
+        {% if post.user == request.user %}
+          <div>
+            <a href="#" class="btn btn-sm btn-outline-primary me-2" title="Edit">
+              <i class="fas fa-edit"></i>
+            </a>
+            <a href="#" class="btn btn-sm btn-outline-danger" title="Delete">
+              <i class="fas fa-trash-alt"></i>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      <p class="mt-3">{{ object.content }}</p>
+
+      {% if object.image %}
+        <img src="{{ object.image.url }}"
+          class="img-fluid rounded"
+          alt="Post image">
+      {% endif %}
+
+      <div class="d-flex justify-content-around mt-3">
+        {% if user.is_authenticated %}
+          <form action="{% url 'post:like_post' pk=object.id %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit"
+              class="
+                btn btn-sm
+                {% if object|user_liked_post:request.user %}
+                  btn-success
+                {% else %}
+                  btn-outline-success
+                {% endif %}">
+
+              👍 {{ object.num_likes }} Like{{ object.num_likes|pluralize }}
+            </button>
+          </form>
+        {% else %}
+          <form action="{% url 'post:like_post' pk=object.id %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit"
+              class="
+                btn btn-sm btn-outline-success">
+              👍 {{ object.num_likes }} Like{{ object.num_likes|pluralize }}
+            </button>
+          </form>
+        {% endif %}
+      </div>
+
+    </div>
+
+      <div class="card-footer bg-white border-top text-start">
+
+        <div class="d-flex align-items-center mb-3">
+          <h6 class="fw-bold mb-0">
+            <i class="fas fa-comments me-2 text-secondary"></i>Comments
+          </h6>
+        </div>
+
+        <form action="{% url 'post:comment_create' pk=post.id %}" method="post" class="d-flex mb-4">
+          {% csrf_token %}
+          <input type="text"
+                name="content"
+                class="form-control form-control-sm me-2"
+                placeholder="Write a comment..."
+                required>
+          <button type="submit" class="btn btn-sm btn-success">
+            Post
+          </button>
+        </form>
+
+        {% for comment in comments %}
+          <div class="border rounded p-2 mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ comment.user }}</strong>
+                <small class="text-muted ms-2">{{ comment.created_at|date:"M. d, Y" }}</small>
+              </div>
+
+              {% if comment.user == request.user %}
+                <div class="btn-group btn-group-sm" role="group">
+                  <!-- <form action="#" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </form> -->
+
+                  <form action="{% url 'post:comment_delete' pk=comment.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </form>
+                </div>
+              {% endif %}
+            </div>
+            <p class="mb-0 mt-1">{{ comment.content }}</p>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

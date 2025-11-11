@@ -1,0 +1,63 @@
+user [icon: user] {
+  id bigint pk
+  username CharField
+  email CharField
+  password CharField
+  created_at DateTimeField
+  updated_at DateTimeField
+}
+
+group [icon: users] {
+  id bigint pk
+  name CharField
+  description TextField
+  created_by ForeignKey
+  created_at DateTimeField
+  updated_at DateTimeField
+}
+
+membership [icon: link] {
+  id bigint pk
+  user ForeignKey
+  group ForeignKey
+  joined_at DateTimeField
+}
+
+comment [icon: message-circle] {
+  id bigint pk
+  user ForeignKey
+  post ForeignKey
+  content TextField
+  created_at DateTimeField
+  updated_at DateTimeField
+}
+
+post [icon: file-text] {
+  id bigint pk
+  user ForeignKey
+  group ForeignKey
+  content TextField
+  image ImageField
+  created_at DateTimeField
+  updated_at DateTimeField
+}
+
+like [icon: heart] {
+  id bigint pk
+  user ForeignKey
+  post ForeignKey
+  created_at DateTimeField
+  updated_at DateTimeField
+}
+
+comment.user > user.id
+comment.post > post.id
+post.user > user.id
+post.group > group.id
+like.user > user.id
+like.post > post.id
+
+group.created_by > user.id
+
+membership.user > user.id
+membership.group > group.id

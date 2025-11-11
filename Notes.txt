@@ -1,0 +1,8 @@
+# Social Network Flow
+- Auth (login, logout, registration) using "django-all"
+
+## project structure:
+  - accounts (app)
+  - group (app)
+  - post (app)
+  - socialnetwork (project)
